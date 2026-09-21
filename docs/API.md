@@ -33,3 +33,15 @@ The snapshot index differs from iteration count for endpoint roots. With tracing
 disabled, CSV contains only its header. Export is intended for solver-produced
 solutions, whose numerical fields are finite. No spreadsheet or runtime dependency
 is required beyond the MoonBit standard library.
+
+### Discovering candidate brackets
+
+`scan_brackets(f, lower, upper, segments)` returns `Result[ScanResult, ScanError]`.
+It evaluates `segments + 1` uniformly spaced samples (1–1,000,000 segments),
+reports adjacent **nonzero opposite-sign** pairs in `brackets`, and reports sampled
+zeros separately in `exact_zeros`. Pass each bracket's bounds to a solver to refine
+it; those solver endpoint evaluations are additional to the scan's count.
+An empty scan is not proof of no roots: tangent roots and multiple crossings
+between samples can be missed. There is no completeness or uniqueness guarantee.
+Invalid bounds, segment counts, nonfinite callbacks and indistinguishable floating
+samples return typed errors. A failed scan returns no partial results.
