@@ -3,6 +3,8 @@ import { pathToFileURL } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { buildBridge } from './build-js.mjs';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 
 const { artifact, run } = buildBridge();
 const { solve_demo } = await import(pathToFileURL(artifact));
@@ -31,5 +33,13 @@ assert.equal(exhausted.ok, true);
 assert.equal(exhausted.solution.converged, false);
 assert.equal(exhausted.solution.reason, 'iteration_limit');
 checks++;
+for (const [args, expectedExit] of [[['calibration','2.375','bisect'],0], [['sqrt','2','bisect','0'],3], [['cooling','20','bisect'],2]]) {
+  const result = spawnSync(process.execPath, [fileURLToPath(new URL('./run-demo.mjs',import.meta.url)), ...args], {encoding:'utf8'});
+  assert.equal(result.status, expectedExit, result.stderr);
+  const output = JSON.parse(result.stdout);
+  assert.equal(output.ok, expectedExit !== 2);
+  if (output.ok) assert.equal(output.solution.converged, expectedExit === 0);
+  checks++;
+}
 writeFileSync(join(run, 'interop-test.json'), JSON.stringify({ checks, status: 'passed' }), { flag: 'wx' });
 console.log(`${checks} JavaScript integration cases passed; retained artifacts: ${run}`);

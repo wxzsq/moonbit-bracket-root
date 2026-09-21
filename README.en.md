@@ -4,6 +4,12 @@ Small MoonBit solvers for a scalar continuous function with a known sign-changin
 
 ## Quick start
 
+For a reviewer-oriented path see [MVP review](docs/MVP-REVIEW.md).
+With Node.js 18+ and MoonBit, `node tools/verify.mjs` runs the full checks and
+three examples. `node tools/run-demo.mjs cooling 50 secant` accepts model inputs;
+`node tools/serve-demo.mjs` starts the interactive localhost demo. See
+[JavaScript integration](docs/JAVASCRIPT.md) and [environment setup](docs/REPRODUCING.md).
+
 With a MoonBit toolchain available:
 
 ```text
@@ -42,11 +48,15 @@ The returned point is the evaluated endpoint with the smaller absolute callback 
 
 Secant interpolation normalizes absolute endpoint values to avoid overflowing `f(b)-f(a)`. Only proposals in the central half of the bracket are accepted; other proposals use an overflow-aware midpoint. In real arithmetic, each successful update keeps at most three quarters of the previous width. This is not Brent's method and is not promised to outperform bisection.
 
-All trace snapshots are retained, using O(iterations) storage. No external numerical or paid API is required. The project deliberately excludes multivariate optimization, symbolic analysis, and automatic bracket discovery.
+Trace snapshots are retained by default, using O(iterations) storage. Passing
+`record_trace=false` uses constant solver storage. JSON and CSV exports preserve
+diagnostics. `scan_brackets` discovers candidate crossings on a bounded grid,
+but cannot guarantee all roots are found. No external numerical or paid API is
+required. Multivariate optimization and symbolic analysis remain out of scope.
 
 ## Validation and provenance
 
-On 2026-09-21, MoonBit `v0.10.14+7d59c7ec9`, build tool `0.1.20260920`, Windows and the JavaScript backend passed 19 tests with warnings denied. One property-oriented test covers 1,000 deterministic scaled linear problems. Regression cases include extreme bounds, sign underflow, secant denominator overflow, adjacent doubles, zero budget, endpoint error-bound misuse, nonfinite callbacks, negative zero, and evaluation accounting. Other backends remain unverified.
+On 2026-09-21, MoonBit `v0.10.14+7d59c7ec9`, build tool `0.1.20260920`, Windows and the JavaScript backend passed 33 MoonBit tests with warnings denied, plus 16 JavaScript/CLI integration cases. One property-oriented test covers 1,000 deterministic scaled linear problems. Regression cases include extreme bounds, sign underflow, secant denominator overflow, adjacent doubles, zero budget, endpoint error-bound misuse, nonfinite callbacks, negative zero, and evaluation accounting. Other backends remain unverified.
 
 See [algorithm notes](docs/ALGORITHM.md), [API details](docs/API.md), and [toolchain provenance](tools/TOOLCHAIN.md). The source and tests were developed with AI assistance and independently reviewed against floating-point counterexamples. Local tests do not establish competition acceptance or payment.
 

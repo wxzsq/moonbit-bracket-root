@@ -4,6 +4,21 @@
 
 [English documentation](README.en.md) · [算法与数值边界](docs/ALGORITHM.md) · [API](docs/API.md)
 
+**评审入口：[MVP 复现与验收说明](docs/MVP-REVIEW.md)**。现有三个完整场景：
+平方根教学、[标定反解](docs/CALIBRATION.md)、[冷却阈值](docs/COOLING.md)。
+支持可配置命令行、本地交互演示、JSON/CSV 导出和候选区间扫描。
+
+推荐使用 Node.js 18+ 和已有 MoonBit 工具链，从仓库根目录运行：
+
+```sh
+node tools/verify.mjs
+node tools/run-demo.mjs cooling 50 secant
+node tools/serve-demo.mjs
+```
+
+最后一条启动 [本地演示](http://127.0.0.1:4317)。无须 npm 依赖或付费服务；
+工具链不在 PATH 时设置 `MOON_HOME`，见 [复现环境说明](docs/REPRODUCING.md)。
+
 ## 运行
 
 已有 MoonBit 工具链时：
@@ -21,7 +36,7 @@ pwsh -NoProfile -File .\tools\test.ps1 -Target js -Demo
 
 脚本为每次运行生成新的 `build-runs/时间-随机标识`，保存测试与示例日志，不清理旧构建、不更改用户 PATH。工具来源和版本见 [TOOLCHAIN.md](tools/TOOLCHAIN.md)。发布代码无需携带工具链压缩包、构建目录或恢复目录。
 
-2026-09-21 已使用 MoonBit 编译器 `v0.10.14+7d59c7ec9` 与 `moon 0.1.20260920` 在 Windows/JavaScript 后端通过 **19 项测试**，其中一项覆盖两种算法的 **1000 个确定性缩放问题**；警告按错误处理，测试零警告。其他后端尚未验证。
+2026-09-21 已使用 MoonBit 编译器 `v0.10.14+7d59c7ec9` 与 `moon 0.1.20260920` 在 Windows/JavaScript 后端通过 **33 项 MoonBit 测试**，其中一项覆盖两种算法的 **1000 个确定性缩放问题**；另有 **16 组 JavaScript/CLI 集成检查**。警告按错误处理。其他后端尚未验证。
 
 ## 使用
 
@@ -64,7 +79,8 @@ match result {
 - 保留异号依靠符号比较，不计算端点函数值乘积；中点和割线权重单独处理极大与极小数值。
 - 保护割线只接受区间中央一半中的候选，其余情况使用二分。它不是 Brent 法，也不保证比二分更快。
 - 返回点是函数残差较小的已评估端点。因此位置误差界用**整个区间宽度**，没有误用半宽。
-- 保存完整轨迹需要 O(迭代数) 空间。非有限回调值返回错误，不伪造成功结果。
+- 默认保存完整轨迹需要 O(迭代数) 空间；传入 `record_trace=false` 使用常量求解器存储。非有限回调值返回错误，不伪造成功结果。
+- `scan_brackets` 可对有限区间均匀采样并返回异号子区间与采样零点；它可能漏掉切触根或采样间的多个根，不保证发现全部根。
 
 ## 测试覆盖
 

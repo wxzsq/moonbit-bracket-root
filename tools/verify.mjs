@@ -16,8 +16,8 @@ if (home && !existsSync(executable)) throw new Error('MOON_HOME does not contain
 const env = { ...process.env, TEMP: join(run, 'tmp'), TMP: join(run, 'tmp'), TMPDIR: join(run, 'tmp') };
 if (home) env.PATH = `${join(home, 'bin')}${process.platform === 'win32' ? ';' : ':'}${env.PATH || ''}`;
 
-function execute(name, args) {
-  const result = spawnSync(executable, args, { cwd: root, env, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
+function execute(name, args, program = executable) {
+  const result = spawnSync(program, args, { cwd: root, env, encoding: 'utf8', maxBuffer: 16 * 1024 * 1024 });
   const log = `${result.stdout || ''}${result.stderr || ''}${result.error ? `\n${result.error.message}\n` : ''}`;
   writeFileSync(join(run, `${name}.log`), log, { flag: 'wx' });
   process.stdout.write(log);
@@ -30,5 +30,6 @@ execute('tests', ['--target-dir', join(run, 'test'), 'test', '--target', 'js', '
 execute('sqrt-demo', ['--target-dir', join(run, 'sqrt'), 'run', '--target', 'js', '--frozen', 'cmd/main']);
 execute('calibration-demo', ['--target-dir', join(run, 'calibration'), 'run', '--target', 'js', '--frozen', 'cmd/calibration']);
 execute('cooling-demo', ['--target-dir', join(run, 'cooling'), 'run', '--target', 'js', '--frozen', 'cmd/cooling']);
+execute('javascript-integration', [join(root, 'tools', 'test-js.mjs')], process.execPath);
 writeFileSync(join(run, 'result.json'), JSON.stringify({ status: 'passed', target: 'js', finishedAt: new Date().toISOString() }, null, 2), { flag: 'wx' });
 console.log(`Verification passed. Logs retained: ${run}`);
