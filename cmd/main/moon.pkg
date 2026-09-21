@@ -1,0 +1,7 @@
+import {
+  "local/bracket_root" @root,
+}
+
+options(
+  "is-main": true,
+)

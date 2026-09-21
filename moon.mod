@@ -1,0 +1,7 @@
+name = "local/bracket_root"
+version = "0.1.0"
+license = "MIT"
+readme = "README.md"
+description = "Bracket-preserving scalar root solvers with explicit termination diagnostics"
+preferred_target = "js"
+supported_targets = "js"
