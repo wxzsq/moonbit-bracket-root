@@ -1,3 +1,4 @@
 import {
   "local/bracket_root" @root,
+  "moonbitlang/core/math",
 }
