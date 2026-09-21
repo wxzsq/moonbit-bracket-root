@@ -28,5 +28,6 @@ function execute(name, args) {
 execute('moon-version', ['version', '--all']);
 execute('tests', ['--target-dir', join(run, 'test'), 'test', '--target', 'js', '--frozen', '--deny-warn']);
 execute('sqrt-demo', ['--target-dir', join(run, 'sqrt'), 'run', '--target', 'js', '--frozen', 'cmd/main']);
+execute('calibration-demo', ['--target-dir', join(run, 'calibration'), 'run', '--target', 'js', '--frozen', 'cmd/calibration']);
 writeFileSync(join(run, 'result.json'), JSON.stringify({ status: 'passed', target: 'js', finishedAt: new Date().toISOString() }, null, 2), { flag: 'wx' });
 console.log(`Verification passed. Logs retained: ${run}`);

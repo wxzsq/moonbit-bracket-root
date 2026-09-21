@@ -1,0 +1,5 @@
+import {
+  "local/bracket_root" @root,
+  "local/bracket_root/examples/scenarios" @scenarios,
+}
+options("is-main": true)
