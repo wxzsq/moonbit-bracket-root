@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>bracket-root · 求根实验台</title>
+<link rel="stylesheet" href="/style.css">
+<main>
+  <header><p class="eyebrow">MOONBIT / NUMERICAL TOOLS</p><h1>把求根过程看清楚</h1><p>修改输入，比较二分与保护割线，检查每一次区间收缩。</p></header>
+  <section class="panel">
+    <form id="form">
+      <label>使用场景<select id="scenario"><option value="sqrt">教学 · 平方根</option><option value="calibration">标定 · 响应反解</option><option value="cooling">冷却 · 阈值时间</option></select></label>
+      <label id="target-label">目标值<input id="target" type="number" step="any" value="2" required></label>
+      <label>算法<select id="method"><option value="bisect">二分法</option><option value="secant">保护割线法</option></select></label>
+      <label>绝对位置容差<input id="atol" type="number" step="any" min="0" value="1e-12" required></label>
+      <label>相对位置容差<input id="rtol" type="number" step="any" min="0" max="0.999999" value="1e-12" required></label>
+      <label>迭代预算<input id="budget" type="number" step="1" min="0" max="10000" value="128" required></label>
+      <button type="submit">运行求解</button>
+    </form>
+    <p id="model" class="note"></p>
+  </section>
+  <section class="panel" aria-live="polite"><h2>结果与终止诊断</h2><p id="status">正在加载 MoonBit 模块…</p><dl id="metrics"></dl></section>
+  <section class="panel"><h2>区间宽度如何变化</h2><p class="note">纵轴为 log₁₀(区间宽度)，横轴为快照序号；精确零宽以空心点标记在图底。快照序号不一定等于迭代数。</p><svg id="plot" viewBox="0 0 800 240" role="img" aria-label="区间宽度随求解过程变化"></svg></section>
+  <section class="panel"><h2>复核与导出</h2><p id="table-note" class="note"></p><div class="scroll"><table><thead><tr><th>快照</th><th>下界</th><th>上界</th><th>f(下界)</th><th>f(上界)</th></tr></thead><tbody id="trace"></tbody></table></div><div class="actions"><button id="json" type="button" disabled>下载 JSON</button><button id="csv" type="button" disabled>下载轨迹 CSV</button></div></section>
+  <footer>所有数值由同一份 MoonBit 库编译执行。标定与冷却参数为模拟数据；示例不代表真实仪器或热过程的验证结果。区间收敛依赖函数连续性和可靠符号，不能仅凭区间变窄证明数学根存在。</footer>
+</main>
+<script type="module" src="/app.mjs"></script>
+</html>

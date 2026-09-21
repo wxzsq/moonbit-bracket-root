@@ -27,3 +27,16 @@ an undocumented JS object layout. No npm packages or network service are used.
 
 This bridge demonstrates three models. The general `(Double)->Double` callback
 API remains available directly in MoonBit for other functions.
+
+## Interactive local demo
+
+Run `node tools/serve-demo.mjs` and open `http://127.0.0.1:4317`. The server binds
+only to localhost and serves four explicit routes; it does not expose the repository
+as a file browser. Set `PORT` to change the port. Stop it with Ctrl+C.
+
+Choose a scenario and algorithm, change the target/tolerances/budget, then run.
+The page displays termination status, the interval-width trajectory, a snapshot
+table, and JSON/CSV downloads. Set the budget to zero to inspect a nonconverged
+result, or cooling target to 20 to inspect an unreachable-target error. The demo
+budget is capped at 10,000 to keep the page responsive; the library supports its
+documented larger limit. The same compiled MoonBit module powers the CLI and page.
