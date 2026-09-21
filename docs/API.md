@@ -15,3 +15,9 @@
 `trace[0]` stores the initial evaluated bracket. Each accepted candidate adds one snapshot; an endpoint zero adds a collapsed final snapshot without increasing the iteration count. Thus trace length is normally `iterations+1`, except for an endpoint zero where it is 2. The final bracket always contains the returned point.
 
 The interval criterion bounds position relative to a root only under the documented continuity and sign-fidelity assumptions. `value` is the callback output at `root`, not an independent residual estimate. See the README for tolerance and resource limits.
+
+Both solvers accept an optional named argument `record_trace=false`. This keeps
+`trace` empty while preserving the final bracket, termination reason, callback
+count and numerical result. It uses constant solver storage for batch work;
+the default remains `true` for teaching and diagnostics. This option does not
+change the iteration budget or suppress callback errors.

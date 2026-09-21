@@ -152,6 +152,7 @@ fn solve(
   upper : Double,
   options : Options,
   use_secant : Bool,
+  record_trace? : Bool = true,
 ) -> Result[Solution, RootError] {
   if !finite(lower) || !finite(upper) || lower >= upper {
     return Err(InvalidBounds)
@@ -170,11 +171,11 @@ fn solve(
   let fu = f(upper)
   if !finite(fu) { return Err(NonFiniteValue(upper)) }
   let mut bracket = { lower, upper, f_lower: fl, f_upper: fu }
-  let trace = [bracket]
+  let trace = if record_trace { [bracket] } else { [] }
   if fl == 0.0 || fu == 0.0 {
     let x = if fl == 0.0 { lower } else { upper }
     bracket = { lower: x, upper: x, f_lower: 0.0, f_upper: 0.0 }
-    trace.push(bracket)
+    if record_trace { trace.push(bracket) }
     return Ok(finish(bracket, 0, ExactZero, trace))
   }
   if same_sign(fl, fu) { return Err(NoSignChange) }
@@ -205,7 +206,7 @@ fn solve(
     iterations = iterations + 1
     if value == 0.0 {
       bracket = { lower: candidate, upper: candidate, f_lower: 0.0, f_upper: 0.0 }
-      trace.push(bracket)
+      if record_trace { trace.push(bracket) }
       return Ok(finish(bracket, iterations, ExactZero, trace))
     }
     bracket = if same_sign(bracket.f_lower, value) {
@@ -213,7 +214,7 @@ fn solve(
     } else {
       { lower: bracket.lower, upper: candidate, f_lower: bracket.f_lower, f_upper: value }
     }
-    trace.push(bracket)
+    if record_trace { trace.push(bracket) }
   } nobreak {
     Ok(finish(bracket, iterations, IterationLimit, trace))
   }
@@ -227,8 +228,9 @@ pub fn bisect(
   lower : Double,
   upper : Double,
   options : Options,
+  record_trace? : Bool = true,
 ) -> Result[Solution, RootError] {
-  solve(f, lower, upper, options, false)
+  solve(f, lower, upper, options, false, record_trace~)
 }
 
 /// Secant interpolation guarded by central-half acceptance and bisection.
@@ -238,6 +240,7 @@ pub fn safeguarded_secant(
   lower : Double,
   upper : Double,
   options : Options,
+  record_trace? : Bool = true,
 ) -> Result[Solution, RootError] {
-  solve(f, lower, upper, options, true)
+  solve(f, lower, upper, options, true, record_trace~)
 }
