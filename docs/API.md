@@ -21,3 +21,15 @@ Both solvers accept an optional named argument `record_trace=false`. This keeps
 count and numerical result. It uses constant solver storage for batch work;
 the default remains `true` for teaching and diagnostics. This option does not
 change the iteration budget or suppress callback errors.
+
+### Exporting results
+
+`solution.to_json_string()` produces JSON with `schema_version: 1`, `root`,
+`value`, `converged`, `reason`, `iterations`, `evaluations`, `bracket` and
+`trace`. Brackets use the same four field names as the MoonBit type. Consumers
+must inspect `converged`; valid JSON can describe an exhausted iteration budget.
+`solution.trace_csv()` exports numeric snapshots with a header and LF newlines.
+The snapshot index differs from iteration count for endpoint roots. With tracing
+disabled, CSV contains only its header. Export is intended for solver-produced
+solutions, whose numerical fields are finite. No spreadsheet or runtime dependency
+is required beyond the MoonBit standard library.
