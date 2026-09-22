@@ -8,6 +8,10 @@
 平方根教学、[标定反解](docs/CALIBRATION.md)、[冷却阈值](docs/COOLING.md)。
 支持可配置命令行、本地交互演示、JSON/CSV 导出和候选区间扫描。
 
+在自己的 MoonBit 工程中使用：[独立项目接入](docs/CONSUMING.md) ·
+[能力与限制](docs/CAPABILITIES.md) · [MVP 试用清单](docs/USER-TRIAL.md)。
+当前使用本地 workspace 依赖，尚未发布到 Mooncakes。独立消费模块已验证，真实用户反馈待收集。
+
 推荐使用 Node.js 18+ 和已有 MoonBit 工具链，从仓库根目录运行：
 
 ```sh
@@ -36,7 +40,7 @@ pwsh -NoProfile -File .\tools\test.ps1 -Target js -Demo
 
 脚本为每次运行生成新的 `build-runs/时间-随机标识`，保存测试与示例日志，不清理旧构建、不更改用户 PATH。工具来源和版本见 [TOOLCHAIN.md](tools/TOOLCHAIN.md)。发布代码无需携带工具链压缩包、构建目录或恢复目录。
 
-2026-09-21 已使用 MoonBit 编译器 `v0.10.14+7d59c7ec9` 与 `moon 0.1.20260920` 在 Windows/JavaScript 后端通过 **33 项 MoonBit 测试**，其中一项覆盖两种算法的 **1000 个确定性缩放问题**；另有 **16 组 JavaScript/CLI 集成检查**。警告按错误处理。其他后端尚未验证。
+截至2026-09-22，使用 MoonBit 编译器 `v0.10.14+7d59c7ec9` 与 `moon 0.1.20260920` 在 Windows/JavaScript 后端通过 **33 项库与场景测试、3 项独立消费模块测试**，其中原有一项覆盖两种算法的 **1000 个确定性缩放问题**；另有 **16 组 JavaScript/CLI 集成检查**。警告按错误处理。其他后端尚未验证。
 
 ## 使用
 

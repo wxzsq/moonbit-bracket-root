@@ -31,5 +31,6 @@ execute('sqrt-demo', ['--target-dir', join(run, 'sqrt'), 'run', '--target', 'js'
 execute('calibration-demo', ['--target-dir', join(run, 'calibration'), 'run', '--target', 'js', '--frozen', 'cmd/calibration']);
 execute('cooling-demo', ['--target-dir', join(run, 'cooling'), 'run', '--target', 'js', '--frozen', 'cmd/cooling']);
 execute('javascript-integration', [join(root, 'tools', 'test-js.mjs')], process.execPath);
+execute('independent-consumer', [join(root, 'tools', 'test-consumer.mjs')], process.execPath);
 writeFileSync(join(run, 'result.json'), JSON.stringify({ status: 'passed', target: 'js', finishedAt: new Date().toISOString() }, null, 2), { flag: 'wx' });
 console.log(`Verification passed. Logs retained: ${run}`);

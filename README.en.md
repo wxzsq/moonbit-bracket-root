@@ -10,6 +10,11 @@ three examples. `node tools/run-demo.mjs cooling 50 secant` accepts model inputs
 `node tools/serve-demo.mjs` starts the interactive localhost demo. See
 [JavaScript integration](docs/JAVASCRIPT.md) and [environment setup](docs/REPRODUCING.md).
 
+For your own callback, follow [the independent consumer guide](docs/CONSUMING.md).
+The module is currently a local workspace dependency, not a Mooncakes release.
+See [capabilities and limits](docs/CAPABILITIES.md) and [the user trial protocol](docs/USER-TRIAL.md).
+An automated separate-module check is available; real-user feedback remains pending.
+
 With a MoonBit toolchain available:
 
 ```text
@@ -59,5 +64,9 @@ required. Multivariate optimization and symbolic analysis remain out of scope.
 On 2026-09-21, MoonBit `v0.10.14+7d59c7ec9`, build tool `0.1.20260920`, Windows and the JavaScript backend passed 33 MoonBit tests with warnings denied, plus 16 JavaScript/CLI integration cases. One property-oriented test covers 1,000 deterministic scaled linear problems. Regression cases include extreme bounds, sign underflow, secant denominator overflow, adjacent doubles, zero budget, endpoint error-bound misuse, nonfinite callbacks, negative zero, and evaluation accounting. Other backends remain unverified.
 
 See [algorithm notes](docs/ALGORITHM.md), [API details](docs/API.md), and [toolchain provenance](tools/TOOLCHAIN.md). The source and tests were developed with AI assistance and independently reviewed against floating-point counterexamples. Local tests do not establish competition acceptance or payment.
+
+On 2026-09-22, the same baseline checks passed again, together with three tests
+in a separate consumer module. Its executable solves a caller-defined cubic
+equation and is checked against `Math.cbrt(2)`. No private solver helper is imported.
 
 Project source: [MIT license](LICENSE). Compiler and standard-library licenses remain their own upstream licenses.

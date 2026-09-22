@@ -21,7 +21,8 @@ node tools/verify.mjs
 
 The runner checks the compiler version, executes every JavaScript target test,
 and runs square-root, calibration and cooling examples, then the JavaScript ABI
-and CLI exit-code checks. A nonzero exit means verification failed.
+and CLI exit-code checks, plus a separate local consumer module's three public-API
+tests and cubic-root executable. A nonzero exit means verification failed.
 Each run creates a unique `build-runs/` directory, redirects temporary files
 there, and retains logs. It never cleans or deletes previous results. Compiler
 versions appear in `moon-version.log`; success is recorded in `result.json`.
